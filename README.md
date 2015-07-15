@@ -11,9 +11,9 @@ Quickstart:
 The test routine should in case of a detected bug write to a logfile (filename is stored by external script in variable 'logfile' )
 and exit Macaulay2.
 
-"The test routine should be loaded in the tests template file
+"The test config file should load the Macaulay2 file with the test routine
 
-Now call './bin/infiniteTest.sh'  with appropriate parameters:
+Now call `./bin/infiniteTest.sh`  with appropriate parameters:
 ```
 $1 = M2 binary
 $2 = test config file
@@ -94,7 +94,7 @@ runTests = ()->
 }
 ```
 
-####  input/gbZ/testGB.testGB.config.00
+####  input/gbZ/testGB.config.00
 ```
 load("tests/testGB.m2")
 
@@ -124,8 +124,9 @@ randomRingOpts = ()->
 ```
 ####  command line call 
 
-`./bin/infiniteTest.sh M2 input/gbZ/testGB.template 0 0 0 200 1000000 1 1`
+`./bin/infiniteTest.sh M2 input/gbZ/testGB.config.00 0 0 0 200 1000000 3 2`
 
+runs the GB tests with settings from `testGB.config.00` with a timeout of 200 sec, 2GB memlimit, looking for 3 bugs and using search idx=2
 
 
 
