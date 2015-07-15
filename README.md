@@ -29,9 +29,9 @@ ${9} = idx for the test; do not use same config file with same idx
 The observed potential bugs will be stored in the 'log' subfolder and will have a file ending '.bug'
 
 Example:
-===============
+----------------------
 
-#testGB.m2#
+#### testGB.m2
 ```
 leadingTermsEquivalent = (I,J)->
 (
@@ -92,7 +92,7 @@ runTests = ()->
 }
 ```
 
-#testGB.template#
+####  testGB.template
 ```
 load("tests/testGB.m2")
 
@@ -120,7 +120,7 @@ randomRingOpts = ()->
     return (opts);
 }
 ```
-# command line call 
+####  command line call 
 
 `./bin/infiniteTestSimpleX.sh M2 input/gbZ/testGB.template 0 0 0 200 1000000 1 1`
 
