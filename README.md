@@ -6,14 +6,14 @@ run random tests for various functions
 
 Quickstart:
 
-1. create a test routine 'runTests()' and a test confige file with user defined test options used in the test routine 
-( see testGB.m2 and testGB.template for example)
+1. create a M2 test routine called `runTests()` and a separate test config file with user defined test options used in the test routine 
+( see `tests/testGB.m2` and `input/gbZ/testGB.config.00` for example)
 The test routine should in case of a detected bug write to a logfile (filename is stored by external script in variable 'logfile' )
 and exit Macaulay2.
 
 "The test routine should be loaded in the tests template file
 
-Now call './bin/infiniteTestSimpleX.sh'  with appropriate parameters:
+Now call './bin/infiniteTest.sh'  with appropriate parameters:
 ```
 $1 = M2 binary
 $2 = test config file
@@ -26,13 +26,16 @@ ${8} = max num bugs
 ${9} = idx for the test; do not use same config file with same idx
 ```
 
-The observed potential bugs will be stored in the 'log' subfolder and will have a file ending '.bug'
+The observed potential bugs will be stored in the 'log/$templateFileName/bugs/' subfolder and will have a file ending '.bug'
 
 Example:
 ----------------------
 
-#### testGB.m2
+#### tests/testGB.m2
 ```
+
+loadPackage "RandomIdeals"
+
 leadingTermsEquivalent = (I,J)->
 (
     if (numColumns (gens I) != numColumns(gens J)) then return false;   
@@ -61,13 +64,12 @@ runTests = ()->
          try(
               I = genI();
               -- print toString (I);
-              --print i;
+              -- print i;
               gI = ideal gens gb I;
               assert( ( (gens I)%gI) == 0 );
               ggI = ideal gens gb gI;
               assert(numColumns (gens gI) == numColumns(gens ggI));
-              -- assert( gens ggI == gens gI ) ;
-               assert( leadingTermsEquivalent( gI, ggI ) ) ;
+              assert( leadingTermsEquivalent( gI, ggI ) ) ;
           )
           else 
           (
@@ -92,7 +94,7 @@ runTests = ()->
 }
 ```
 
-####  testGB.template
+####  input/gbZ/testGB.testGB.config.00
 ```
 load("tests/testGB.m2")
 
@@ -122,7 +124,7 @@ randomRingOpts = ()->
 ```
 ####  command line call 
 
-`./bin/infiniteTestSimpleX.sh M2 input/gbZ/testGB.template 0 0 0 200 1000000 1 1`
+`./bin/infiniteTest.sh M2 input/gbZ/testGB.template 0 0 0 200 1000000 1 1`
 
 
 
