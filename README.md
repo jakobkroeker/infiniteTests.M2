@@ -14,23 +14,25 @@ and exit Macaulay2.
 "The test routine should be loaded in the tests template file
 
 Now call './bin/infiniteTestSimpleX.sh'  with appropriate parameters:
-
-# $1 = M2 binary
-# $2 = test config file
-# $3 = keep log (0,1)
-# $4 = consider timeout(0,1)
-# $5 = check for out of mem(0,1)
-# $6 = tmelimit (in seconds)
-# ${7} = memory limit (in kbyte)
-# ${8} = max num bugs
-# ${9} = idx for the test; do not use same config file with same idx
+```
+$1 = M2 binary
+$2 = test config file
+$3 = keep log (0,1)
+$4 = consider timeout(0,1)
+$5 = check for out of mem(0,1)
+$6 = tmelimit (in seconds)
+${7} = memory limit (in kbyte)
+${8} = max num bugs
+${9} = idx for the test; do not use same config file with same idx
+```
 
 The observed potential bugs will be stored in the 'log' subfolder and will have a file ending '.bug'
 
 Example:
+===============
 
 #testGB.m2#
-
+```
 leadingTermsEquivalent = (I,J)->
 (
     if (numColumns (gens I) != numColumns(gens J)) then return false;   
@@ -88,10 +90,10 @@ runTests = ()->
         );
     }
 }
-
+```
 
 #testGB.template#
-
+```
 load("tests/testGB.m2")
 
 randomIdealOpts = ()->
@@ -117,9 +119,10 @@ randomRingOpts = ()->
     };
     return (opts);
 }
-
+```
 # command line call 
-./bin/infiniteTestSimpleX.sh M2 input/gbZ/testGB.template 0 0 0 200 1000000 1 1
+
+`./bin/infiniteTestSimpleX.sh M2 input/gbZ/testGB.template 0 0 0 200 1000000 1 1`
 
 
 
