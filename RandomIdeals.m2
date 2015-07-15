@@ -1,10 +1,10 @@
 newPackage(
      "RandomIdeals",
      Version => "0.1", 
-     Date => "15.02.2013",
+     Date => "14.07.2015",
      Authors => {{
            Name => "Jakob Kroeker", 
-           Email => "kroeker@uni-math.gwdg.de", 
+           Email => "kroeker@spaceship-earth.net", 
            HomePage => "http://www.crcg.de/wiki/User:Kroeker"}
       },
      Configuration => {},
@@ -20,6 +20,7 @@ export {
   "randomTermFactory",
   "randomPolyFactory",
   "randomIdealFactory",
+  "randomIdealGen",
   "defaultRandomIdealFactory"
 }
 
@@ -324,11 +325,37 @@ TEST ///
 
 ///
 
-defaultRandomIdealFactory = method(Options=>{
-	  "absCoeff"=>5,"maxDegree"=>3,"maxTerms"=>3, "maxGens"=>3});
+defaultIdealOpts := ()->
+{
+    opts := new OptionTable from {
+     "absCoeff"=>5,
+     "maxDegree"=>3,
+     "maxTerms"=>3, 
+     "maxGens"=>3
+    };
+    return (opts);
+}
 
-defaultRandomIdealFactory (Ring) := Function => opts->(rng)->
+defaultRingOpts := ()->
+{
+    opts := new OptionTable from {
+     "numVars"=>3,
+     "orderings" => {RevLex},
+     "maxWeight"=>5,
+     "addWeights"=>false
+    };
+    return (opts);
+}
+
+
+
+
+
+createRandomIdealGenerator = method();
+
+createRandomIdealGenerator (Ring, OptionTable) := Function => (rng, opts)->
 (
+
  randomCoefficient := randomCoefficientFactory(coefficientRing rng ,opts#"absCoeff");
  randomMonomial := randomMonomialFactory(rng, opts#"maxDegree");
  randomTerm := randomTermFactory(randomCoefficient, randomMonomial); 
@@ -336,6 +363,46 @@ defaultRandomIdealFactory (Ring) := Function => opts->(rng)->
  randomIdeal := randomIdealFactory(randomPoly, opts#"maxGens");
  return randomIdeal; 
 );
+
+
+defaultRandomIdealFactory = method();
+
+defaultRandomIdealFactory (Ring) := Function => (rng)->
+(
+    opts := defaultIdealOpts();
+    return( createRandomIdealGenerator(rng, opts) );
+);
+
+
+randomOrdering  := (ringopts)->
+(
+    mo := {(MonomialOrder=>ringopts#"orderings"#(random(1,#(ringopts#"orderings"))-1))};
+    if ringopts#"useWeights" then
+    (
+        we := { (Weights=> apply(ringopts#"numVars", i-> random( -ringopts#"maxWeight", ringopts#"maxWeight" ))) }; 
+		print "we";
+		print we;
+		--mo = append(mo, we );
+      mo = we;
+	);
+    print mo;
+    result1  := new OptionTable from 	mo	;
+    result2  := new OptionTable from append(mo,  (Global=>false) );
+     x := symbol x;
+	try (  (ringopts#"coeffRng")[x, result1] ) 	then ( result1 )	else    (print "r2"; result2 )
+)
+
+randomIdealGen = (ringopts, idealopts)->
+{
+    x := symbol x;
+    m := monoid([x_1..x_(ringopts#"numVars")], randomOrdering(ringopts) );
+    --rng := ZZ(m) ;
+    rng := (ringopts#"coeffRng")(m) ;
+    randomIdeal := createRandomIdealGenerator(rng,idealopts);
+    return randomIdeal;
+}
+
+
 
 
 --
