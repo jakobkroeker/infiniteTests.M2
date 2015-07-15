@@ -11,7 +11,7 @@ Quickstart:
 The test routine should in case of a detected bug write to a logfile (filename is stored by external script in variable 'logfile' )
 and exit Macaulay2.
 
-"The test config file should load the Macaulay2 file with the test routine
+The test config file should load the Macaulay2 file with the test routine
 
 Now call `./bin/infiniteTest.sh`  with appropriate parameters:
 ```
