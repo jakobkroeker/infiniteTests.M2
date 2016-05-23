@@ -1,7 +1,37 @@
 infiniteTests.M2
 ===============
 
-run random tests for various functions
+The aim of this package is to provide a framework for random testing of algorithms implemented in Macaulay2,
+that means observe bugs by throwing random input at a testee function.
+The framework may also be used to search for examples with interesting properties.
+The intention of implementing a framework is to remove the burden from the user of writing boilerplate code.
+
+
+The package is currently under development and in alpha status (functionality not complete).
+
+
+
+Possible applications:
+
+-find a crash by throwing random input at a function
+-find a bug by comparing results of two different algorithm implementations
+-find a bug by checking result invariants
+-automate re-checking (rerun the failing example with recent Macaulay and check if it still fails)
+
+
+Design draft:
+  the (repeated) random tests are done by  'test driver'
+ 
+  the test driver should usually have following parameters:
+     
+     - random input generator function (with no parameters)
+     - testee (takes the output of the random input generator from above)
+     - result check function (which takes the input and the testee output as parameters)
+     - processFailingExample() which takes everything from above and
+          -  e.g. generates a rerunnable .m2 file from it 
+          -  or adds the failing example into a list /into a database
+     - stopping condition (run forever/timelimit /max tests/ or whatever
+     
 
 
 Quickstart:
