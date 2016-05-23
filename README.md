@@ -34,7 +34,7 @@ Example:
 #### tests/testGB.m2
 ```
 
-loadPackage "RandomIdeals"
+loadPackage "InfiniteTests"
 
 leadingTermsEquivalent = (I,J)->
 (

@@ -1,7 +1,7 @@
 newPackage(
-     "RandomIdeals",
+     "InfiniteTests",
      Version => "0.1", 
-     Date => "14.07.2015",
+     Date => "22.05.2016",
      Authors => {{
            Name => "Jakob Kroeker", 
            Email => "kroeker@spaceship-earth.net", 
@@ -9,7 +9,7 @@ newPackage(
       },
      Configuration => {},
      PackageExports => {},
-     Headline => "Framework to generate random ideals",
+     Headline => "Framework for random tests",
      DebuggingMode => true
 )
 --#     AuxiliaryFiles=>true

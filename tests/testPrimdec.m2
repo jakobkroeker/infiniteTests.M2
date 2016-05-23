@@ -1,8 +1,8 @@
 --/run/media/jakob/TOEXT4/work/home_fc18/Projects/M2-master/M2/BUILD/master/M2
 
-uninstallPackage "RandomIdeals"
-installPackage "RandomIdeals"
-check "RandomIdeals"
+uninstallPackage "InfiniteTests"
+installPackage "InfiniteTests"
+check "InfiniteTests"
 
 rng = QQ[x,y,z]
 opts = new OptionTable from {
