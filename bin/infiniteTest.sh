@@ -8,6 +8,7 @@
 # ${7} = memory limit
 # ${8} = max num bugs
 # ${9} = idx 
+
 # set memlimit e.g.:  ulimit -v 1000000 ; 
 
 export M2binary=$1
@@ -18,7 +19,8 @@ considerTimeout=$4
 checkOutOfMem=$5
 basicTimeout=$6
 killTimeout=$(($basicTimeout +30))
-extTimeout=$((10 * $6))
+#extTimeout=$((10 * $6))
+timeoutCommand=${10}
 
 
 
@@ -27,7 +29,7 @@ extTimeout=$((10 * $6))
 minimize=$8
 
 
-maxMinimizeTime=$((3600*${10}))
+#maxMinimizeTime=$((3600*${10}))
 
 elapsedMinimizeTime=0
 
@@ -126,12 +128,15 @@ do
 
     echo " runTests() " >> /tmp/testM2/input/$filename/$filename.$idx.in;  
 
+    # set -o pipefail : see https://bclary.com/blog/2006/07/20/pipefail-testing-pipeline-exit-codes/
+    # timeout --kill-after 5 300 top 
+    # 
     if [ $keepLog -eq 1 ] 
     then
-        set -o pipefail; timeout --kill-after=5 $basicTimeout  $M2binary   /tmp/testM2/input/$filename/$filename.$idx.in 2>&1 | tee -a log/$filename/id_$idx.log;
+        set -o pipefail; $timeoutCommand --kill-after=5 $basicTimeout  $M2binary   /tmp/testM2/input/$filename/$filename.$idx.in 2>&1 | tee -a log/$filename/id_$idx.log;
         status=$?; echo "status="$status;echo "status"$status >> log/$filename/id_$idx.log;
     else
-        set -o pipefail; timeout --kill-after=5 $basicTimeout  $M2binary /tmp/testM2/input/$filename/$filename.$idx.in 2>&1 | tee log/$filename/id_$idx.log;
+        set -o pipefail; $timeoutCommand --kill-after=5 $basicTimeout  $M2binary /tmp/testM2/input/$filename/$filename.$idx.in 2>&1 | tee log/$filename/id_$idx.log;
         status=$?; echo "status="$status;echo "status"$status >> log/$filename/id_$idx.log;
     fi;   
     #echo "show output file ******************************************" 
@@ -159,7 +164,7 @@ do
         echo "quit;" >> log/$filename/id_$idx.$count;
 
         sleep 2;
-        set -o pipefail; timeout --kill-after=5 $extTimeout  $M2binary  log/$filename/id_$idx.$count 2>&1 | tee log/$filename/id_$idx.log;
+        set -o pipefail; $timeoutCommand --kill-after=5 $extTimeout  $M2binary  log/$filename/id_$idx.$count 2>&1 | tee log/$filename/id_$idx.log;
         status=$?; echo "status="$status;echo "status"$status >> log/$filename/id_$idx.log;
     fi; 
 
