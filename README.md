@@ -74,7 +74,7 @@ ${9} = idx for the test; do not use same config file with same idx
 
 The observed potential bugs will be stored in the 'log/$templateFileName/bugs/' subfolder and will have a file ending '.bug'
 
-Example:
+deprecated Example:
 ----------------------
 
 #### tests/testGB.m2
