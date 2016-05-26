@@ -1,8 +1,8 @@
 infiniteTests.M2
 ===============
 
-The aim of this package is to provide a framework for random testing of algorithms implemented in Macaulay2,
-that means observe bugs by throwing random input at a testee function.
+The aim of this package is to provide a framework for random testing of algorithms implemented in Macaulay2.
+That it detects bugs by throwing random input at a testee function.
 The framework may also be used to search for examples with interesting properties.
 The intention of implementing a framework is to remove the burden from the user of writing boilerplate code.
 
