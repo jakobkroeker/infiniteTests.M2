@@ -8,8 +8,13 @@
 # ${7} = memory limit
 # ${8} = max num bugs
 # ${9} = idx 
+# ${10} = timeout command name 
+# ${11} = ulimit command name 
+# ${12} timeout factor
 
-# set memlimit e.g.:  ulimit -v 1000000 ; 
+
+# Considering timeout means that after a timeout the last example is ran again 
+#and if the computation hits the extTimeout, then we have an example hitting a timeout.
 
 export M2binary=$1
 
@@ -19,14 +24,11 @@ considerTimeout=$4
 checkOutOfMem=$5
 basicTimeout=$6
 killTimeout=$(($basicTimeout +30))
-#extTimeout=$((10 * $6))
+
 timeoutCommand=${10}
 
+extTimeout=$((${11} * $basicTimeout))
 
-
-
-
-minimize=$8
 
 
 #maxMinimizeTime=$((3600*${10}))
@@ -43,7 +45,7 @@ echo "checkOutOfMem    "$checkOutOfMem
 #echo "keepLog:"$keepLog
 if [ $keepLog -eq 1 ] ; then  echo "keep log " ; fi;
 if [ $keepLog -eq 0 ] ; then  echo " do not keep log " ; fi;
-echo "timeout:  "basicTimeout" sec"
+echo "timeout:  "$basicTimeout" sec"
 memlimit=${7}
 echo "memlimit: "$memlimit" kb"
 maxBugs=$((${8} + 0));
@@ -133,12 +135,13 @@ do
     # 
     if [ $keepLog -eq 1 ] 
     then
-        set -o pipefail; $timeoutCommand --kill-after=5 $basicTimeout  $M2binary   /tmp/testM2/input/$filename/$filename.$idx.in 2>&1 | tee -a log/$filename/id_$idx.log;
+        set -o pipefail; $timeoutCommand --kill-after=15 $basicTimeout  $M2binary   /tmp/testM2/input/$filename/$filename.$idx.in 2>&1 | tee -a log/$filename/id_$idx.log;
         status=$?; echo "status="$status;echo "status"$status >> log/$filename/id_$idx.log;
     else
-        set -o pipefail; $timeoutCommand --kill-after=5 $basicTimeout  $M2binary /tmp/testM2/input/$filename/$filename.$idx.in 2>&1 | tee log/$filename/id_$idx.log;
+        set -o pipefail; $timeoutCommand --kill-after=15 $basicTimeout  $M2binary /tmp/testM2/input/$filename/$filename.$idx.in 2>&1 | tee log/$filename/id_$idx.log;
         status=$?; echo "status="$status;echo "status"$status >> log/$filename/id_$idx.log;
-    fi;   
+    fi;
+    echo "normal run finished"
     #echo "show output file ******************************************" 
     #cat log/$filename/id_$idx.$count;
     #cat log/$filename/id_$idx.$count > /tmp/testM2/input/$filename/$filename.$idx.output;
@@ -204,6 +207,7 @@ do
 
         mv log/$filename/bugs/id_$idx.count.tmp log/$filename/bugs/id_$idx.count
     fi; 
+     echo "script loop end"
 done
 echo "done"
 echo $1" "$2" "$3" "$4" "$5" "$6" "${7}" "${8}" "${9}

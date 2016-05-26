@@ -300,7 +300,7 @@ TEST ///
 
 ///
 
-defaultIdealOpts := ()->
+defaultIdealOpts = ()->
 {
     opts := new OptionTable from {
      "absCoeff"=>5,
@@ -311,7 +311,7 @@ defaultIdealOpts := ()->
     return (opts);
 }
 
-defaultRingOpts := ()->
+defaultRingOpts = ()->
 {
     opts := new OptionTable from {
      "numVars"=>3,

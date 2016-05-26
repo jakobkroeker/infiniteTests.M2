@@ -1,20 +1,11 @@
 
- print "entered main testing file";
+ << "entered testing file"<< endl << flush;
   
 # loadedFiles#(#loadedFiles -1)
 
 loadPackage ("InfiniteTests", Reload=>true)
 
- print "loaded InfiniteTests";
-
--- testlib = "InfiniteTests/tests/testGBNew.m2"
-
-
-testlib = null
-
--- load(testlib)
-
--- print "loaded testlib";
+ << "loaded InfiniteTests" << endl << flush;
  
  
 RingGeneratingOptions = new MutableHashTable from defaultRingOpts(); -- from RandomIdealFactory
@@ -42,32 +33,32 @@ IdealGeneratingOptions = new OptionTable from IdealGeneratingOptions;
  
 logfile = defaultLogfileIfNotSet(logfile, "./defaultTest.log" )
 
- print "logfile defined";
+ << "logfile defined" << endl << flush;
 
 -- define and pass a input list of corner cases 
 
 -- replace boxedTestee with resultCalculator 
 
 testSetup = new MutableHashTable;
+
+
 testSetup#"requiredPackage" = "InfiniteTests";
--- testSetup#"requiredFile" = testlib;
-testSetup#"requiredFile" = "input/gbZ/simpleTestGB.config.00";
+testSetup#"requiredFile" = "input/gbZ/simpleTestGB.config.00"; -- wee need to know the path of this file itself!
 testSetup#"endReached" = createInfiniteSearchEndCheck();
 testSetup#"inputGenerator" = randomIdealGen( RingGeneratingOptions, IdealGeneratingOptions );
 testSetup#"resultCalculator"    = boxedGB;         -- from testGBNew 
 testSetup#"isInteresting"  = GBReduceCheckFails;   -- from testGBNew 
 testSetup#"log" = emptyLogFkt;
 testSetup#"recordExample" = createLogfileRecord(logfile);   -- from testGBNew 
-testSetup#"notify" = createNotifyByNumTrial(1, 1);
+testSetup#"notify" = createNotifyByNumTrial(1000, 1);
     
 
 runTests := () ->
 (
-    print "called runTests";
-   
+     << "called runTests"<< endl << flush;
   
      dryRunDriver ( testSetup ) ;
-     print "calling the basic test driver";
+     << "calling the basic test driver"  << endl << flush;
      basicTestDriver ( testSetup ) ;
 )
 
@@ -75,7 +66,7 @@ runTests := () ->
 -- nextIssue: how to check, that everything is fine? (disable the try catch) or run it with a dryRunDriver
 
 
- print "end reached main testing file";
+ << "end reached main testing file"<< endl << flush;
  
  
  

@@ -1,10 +1,6 @@
 
---/run/media/jakob/TOEXT4/work/home_fc18/Projects/M2-master/M2/BUILD/master/M2
-
---uninstallPackage "InfiniteTests"
---installPackage "InfiniteTests"
---check "InfiniteTests"
-
+ 
+ 
 
 load("tests/testGB.m2")
 
@@ -29,8 +25,8 @@ randomRingOpts = ()->
      "coeffRng" => ZZ,
      "numVars"=>random(0,2),
      "orderings" => {GRevLex,GLex,Lex },
-   	--orderings = {Lex, GLex,RevLex, GRevLex};
- 	--orderings = {Lex, GLex, GRevLex};
+      --orderings = {Lex, GLex,RevLex, GRevLex};
+      --orderings = {Lex, GLex, GRevLex};
      "maxWeight"=>5,
      "useWeights"=>false
     };

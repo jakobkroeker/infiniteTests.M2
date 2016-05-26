@@ -3,7 +3,7 @@
 
 --uninstallPackage "InfiniteTests"
 --installPackage "InfiniteTests"
-loadPackage "InfiniteTests"
+--loadPackage "InfiniteTests"
 --check "InfiniteTests"
 
 

@@ -1,43 +1,27 @@
 restart
-defaultParameter:=()->(
-par := new MutableHashTable;
-par#"M2binary"="M2";
-par#"fullinput"="input/gbZ/testGB.config.00";
-par#"keepLog"="0";
-par#"considerTimeout"="0";
-par#"checkOutOfMem"="0";
-par#"basicTimeout"="10";
-par#"memLimit"="1000000";
-par#"maxBugs"="1";
-par#"idx"="1";
-par#"timeoutCommand"="gtimeout";
-par
-)
 
-par = defaultParameter();
+--uninstallPackage "InfiniteTests"
+--installPackage "InfiniteTests"
+--restart
+--loadPackage "InfiniteTests"
 
-par#"basicTimeout"=20
+  runParameters = defaultRunParameters();
+  
+  
+  runParameters#"M2binary" = "M2";
+  runParameters#"fullinput"="input/gbZ/simpleTestGB.config.00";
+  runParameters#"keepLog" = 0;
+  runParameters#"catchTimeoutExamples" = 0;
+  runParameters#"catchOutOfMem" = 0;
+  runParameters#"basicTimeout" = 10;
+  runParameters#"timeoutRerunFactor" = 10; -- only relevant if we want to catch timeout examples
+  runParameters#"virtualMemoryLimit" = 1000000; 
+  runParameters#"maxFindings" = 1;
+  runParameters#"idx" = 1; -- do not run the same test in parallel with same idx
+  runParameters#"timeoutCommand" = "timeout"; -- better that this command is somehow installed by M2 if necessary (what to do on MAC OS)
+  
 
 
-runScript:=par->(
-cmd="./bin/infiniteTest.sh"|" "|par#"M2binary"|" "| par#"fullinput" |" "| par#"keepLog" |" "| par#"considerTimeout" |" "| par#"checkOutOfMem" |" "| par#"basicTimeout" |" "| par#"memLimit" |" "| par#"maxBugs" |" "|  par#"idx" |" "| par#"timeoutCommand";
-run cmd
-)
+runSearchScript(par)
 
-par=genPar()
-par#"memLimit"="10000"
-runScript(par)
-
-cmd=buildCMD(genPar())
-par
-par#"M2binary"="M2"
-par#"M2binary"
-apply(#par,i->par_i)
-values(par)
-keys(par) 
-
---run "./bin/infiniteTest.sh M2 input/gbZ/testGB.config.00 0 0 0 200 1000000 3 2"
-
-par
-run cmd
 

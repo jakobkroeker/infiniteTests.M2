@@ -1,5 +1,13 @@
 
 
+export {
+  "leadingTermsEquivalent",
+  "createLogfileRecord",
+  "GBReduceCheckFails",
+  "boxedGB"
+}
+
+ 
 leadingTermsEquivalent = (I,J)->
 (
     if (numColumns (gens I) != numColumns(gens J)) then return false;   
@@ -17,10 +25,6 @@ leadingTermsEquivalent = (I,J)->
     return (true);
 );
 
-emptyLogFkt = (str) ->
-(
-   ddf
-)
 
 
 -- issue : we do too much computations (if gi already fails, we should not compute ggI
@@ -32,50 +36,44 @@ boxedGB = (I)->
    result#"I"    = I;
    result#"gI"   = ideal gens gb I;
    
-   assert( ( (gens I) % result#"gI") == 0 );
+   -- assert( ( (gens I) % result#"gI") == 0 );
+   -- if we do here an assert, we need a try catch in the test file
    result#"ggI"  = ideal gens gb result#"gI";
    return result;
-)
+);
 
 
-GBReduceCheckFails = (input, result) ->
+GBReduceCheckFails = (inputValue, result) ->
 (
-    return   ( (gens input) % result#"gI") != 0 ;
-)
+    return   ( (gens inputValue) % result#"gI") != 0 ;
+);
 
 
-recordGBExample = (testSetup, input, result)->
+
+createLogfileRecord = (logfileName) ->
 (
-                lf := openOut logfile;
-                lf << "loadPackage(\"" | testSetup#"requiredPackage" |"\");" << endl;
-                lf << "load(\"" | testSetup#"requiredFile" |"\");" << endl;
-                lf << "R = " | (toExternalString ring input);
+        tmpRecordGBExample := (testSetup, inputValue, result)->
+        (
+                lf := openOut logfileName;
+                if (testSetup#"requiredPackage" =!= null) then
+                (
+                        lf << "loadPackage(\"" | testSetup#"requiredPackage" |"\");" << endl;
+                );
+                if (testSetup#"requiredFile" =!= null) then
+                (
+                        lf << "load(\"" | testSetup#"requiredFile" |"\");" << endl;
+                );
+                lf << "R = " | (toExternalString ring inputValue);
                 lf << endl;
-                lf << "input = " | (toString input);
+                lf << "inputValue = " | (toString inputValue);
                 lf << endl;
-                lf << "result = " << (toString testSetup#"resultCalculator") << "input";
-                lf << "isInteresting =" | (toString testSetup#"isInteresting") << "(input, result)" ;
-                lf << " if (isInteresting) then (  exit (123);        ); ";
-                lf << "exit (0) ;";
+                lf << "result =  testSetup#\"resultCalculator\" inputValue; " << endl;
+                lf << "isInteresting =  testSetup#\"isInteresting\" (inputValue, result)" << endl ;
+                lf << " if (isInteresting) then (  exit (123);        ); " << endl;
+                lf << "exit (0) ;" << endl;
+                lf << flush;
+                lf << close;
+                
+        );
+        return tmpRecordGBExample;
 )
-
-
- 
-
---end
-
-
--- absCoeff = random(1, opts#"absCoeff");
---    numVars = random(1,15);
---    maxMonomialDegree = random(1,7);
---    maxTerms = random(1,5);
---    maxGens = random(1,5);
-
---    rng = ZZ[x_1..x_numVars]
---    randomCoefficient = randomCoefficientFactory(coefficientRing rng ,absCoeff);
---    randomMonomial = randomMonomialFactory(rng, maxMonomialDegree)
---    randomTerm = randomTermFactory(randomCoefficient, randomMonomial)
---    randomPoly = randomPolyFactory(randomTerm, maxTerms);
---    randomIdeal = randomIdealFactory(randomPoly, maxGens);
-
-
