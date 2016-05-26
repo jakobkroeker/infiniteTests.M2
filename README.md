@@ -47,7 +47,9 @@ and at
   
 more detailed documentation will follow in short
 
+Remaining goals:
 
+search for in some way minimal failing examples
 
 
 deprecated Quickstart:
