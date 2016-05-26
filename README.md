@@ -34,6 +34,22 @@ Design draft:
      
 
 
+NEW EXAMPLE:
+
+run
+
+`M2    InfiniteTests/Examples/minimalRunExample.m2`
+
+to understand how it works, look at 
+ `InfiniteTests/Examples/minimalRunExample.m2`
+and at
+  `input/gbZ/simpleTestGB.config.00`
+  
+more detailed documentation will follow in short
+
+
+
+
 Quickstart:
 
 1. create a M2 test routine called `runTests()` and a separate test config file with user defined test options used in the test routine 
