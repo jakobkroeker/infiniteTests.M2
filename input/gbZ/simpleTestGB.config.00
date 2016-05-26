@@ -1,0 +1,81 @@
+
+ print "entered main testing file";
+  
+# loadedFiles#(#loadedFiles -1)
+
+loadPackage ("InfiniteTests", Reload=>true)
+
+ print "loaded InfiniteTests";
+
+-- testlib = "InfiniteTests/tests/testGBNew.m2"
+
+
+testlib = null
+
+-- load(testlib)
+
+-- print "loaded testlib";
+ 
+ 
+RingGeneratingOptions = new MutableHashTable from defaultRingOpts(); -- from RandomIdealFactory
+
+RingGeneratingOptions#"coeffRng"   = ZZ
+RingGeneratingOptions#"numVars"    = 2
+RingGeneratingOptions#"orderings"  = { GRevLex, GLex, Lex }
+RingGeneratingOptions#"maxWeight"  = 5
+RingGeneratingOptions#"useWeights" = false
+
+RingGeneratingOptions = new OptionTable from RingGeneratingOptions;
+
+IdealGeneratingOptions  = new MutableHashTable from defaultIdealOpts(); -- from RandomIdealFactory
+
+IdealGeneratingOptions#"absCoeff"  = 100
+IdealGeneratingOptions#"maxDegree" =  3
+IdealGeneratingOptions#"maxTerms"  =  4
+IdealGeneratingOptions#"maxGens"   =  2
+
+IdealGeneratingOptions = new OptionTable from IdealGeneratingOptions;
+
+ -- usually (global) log filename is set from the testing shell script
+ -- but if this code is run directly, we have to set it:
+ 
+ 
+logfile = defaultLogfileIfNotSet(logfile, "./defaultTest.log" )
+
+ print "logfile defined";
+
+-- define and pass a input list of corner cases 
+
+-- replace boxedTestee with resultCalculator 
+
+testSetup = new MutableHashTable;
+testSetup#"requiredPackage" = "InfiniteTests";
+-- testSetup#"requiredFile" = testlib;
+testSetup#"requiredFile" = "input/gbZ/simpleTestGB.config.00";
+testSetup#"endReached" = createInfiniteSearchEndCheck();
+testSetup#"inputGenerator" = randomIdealGen( RingGeneratingOptions, IdealGeneratingOptions );
+testSetup#"resultCalculator"    = boxedGB;         -- from testGBNew 
+testSetup#"isInteresting"  = GBReduceCheckFails;   -- from testGBNew 
+testSetup#"log" = emptyLogFkt;
+testSetup#"recordExample" = createLogfileRecord(logfile);   -- from testGBNew 
+testSetup#"notify" = createNotifyByNumTrial(1, 1);
+    
+
+runTests := () ->
+(
+    print "called runTests";
+   
+  
+     dryRunDriver ( testSetup ) ;
+     print "calling the basic test driver";
+     basicTestDriver ( testSetup ) ;
+)
+
+--  runTests() --is called from Shell 
+-- nextIssue: how to check, that everything is fine? (disable the try catch) or run it with a dryRunDriver
+
+
+ print "end reached main testing file";
+ 
+ 
+ 
