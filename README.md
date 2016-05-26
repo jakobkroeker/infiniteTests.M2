@@ -25,8 +25,8 @@ Design draft:
   the test driver should usually have following parameters:
      
      - random input generator function (with no parameters)
-     - testee (takes the output of the random input generator from above)
-     - result check function (which takes the input and the testee output as parameters)
+     - resultCalculator (takes the output of the random input generator from above)
+     - result check function (which takes the input and the resultCalculator output as parameters)
      - processFailingExample() which takes everything from above and
           -  e.g. generates a rerunnable .m2 file from it 
           -  or adds the failing example into a list /into a database
